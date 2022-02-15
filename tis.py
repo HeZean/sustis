@@ -2,12 +2,18 @@ import json
 import re
 import time
 import requests
+import datetime
 
 cas_url = 'https://cas.sustech.edu.cn/cas/login?service=https%3A%2F%2Ftis.sustech.edu.cn%2Fcas'
 ele_url = 'https://tis.sustech.edu.cn/Xsxk/addGouwuche'
 
 session = requests.Session()
-tis = session.get(cas_url)
+try:
+    tis = session.get(cas_url)
+except:
+    print('Internet connection error, exiting')
+    exit(1)
+
 headers = {
     'username': '',
     'password': '',
@@ -27,23 +33,57 @@ ele_head = {
 
 
 def login():
-    tis = session.post(cas_url, headers)
+    failToLogin = True
+    retryTime = 10
+    while failToLogin and retryTime >= 0:
+        try:
+            tis = session.post(cas_url, headers)
+            failToLogin = False
+        except:
+            failToLogin = True
+            retryTime -= 1
+            print('Failed to login, retrying...')
+    if failToLogin:
+        print('Failed to login, CAS server is being fucked, exiting')
+
     if str(tis.content, 'utf-8').startswith('<!DOCTYPE html><html>'):
         raise Exception('Username or password incorrect')
-    print('Successfully logged in')
+
+    print('Successfully logged in\n')
 
 
-def qk(courses, try_time=1200):
+def qk(courses,
+       # stage 1: 0.1 tps
+       since=str(datetime.date.today()) + ' 12:57:00',
+       # stage 2: 5 tps
+       pat=str(datetime.date.today()) + ' 12:59:00',
+       # stage 3: 20 tps
+       until=str(datetime.date.today()) + ' 13:05:00'):
     trial_cnt = 0
+    start_batch = datetime.datetime.strptime(since, '%Y-%m-%d %H:%M:%S')
+    pat_batch = datetime.datetime.strptime(pat, '%Y-%m-%d %H:%M:%S')
+    end_batch = datetime.datetime.strptime(until, '%Y-%m-%d %H:%M:%S')
+
     try:
-        while trial_cnt < try_time:
+        while True:
             trial_cnt += 1
             for course in courses:
                 ele_head.update(course)
                 tis = session.post(ele_url, ele_head)
                 print(trial_cnt, tis.json()['message'], sep='\t')
-            time.sleep(0.1)
+                time.sleep(0.05)
+
+            if datetime.datetime.now() < start_batch:
+                print(datetime.datetime.now())
+                time.sleep(10)
+            elif datetime.datetime.now() < pat_batch:
+                print(datetime.datetime.now())
+                time.sleep(0.2)
+            elif datetime.datetime.now() > end_batch:
+                break
+
             print()
+
     except KeyboardInterrupt:
         return
     except:
