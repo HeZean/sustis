@@ -53,12 +53,9 @@ def login():
 
 
 def qk(courses,
-       # stage 1: 0.1 tps
-       since=str(datetime.date.today()) + ' 12:57:00',
-       # stage 2: 5 tps
-       pat=str(datetime.date.today()) + ' 12:59:00',
-       # stage 3: 20 tps
-       until=str(datetime.date.today()) + ' 13:05:00'):
+       since=f'{str(datetime.date.today())} 12:57:00',
+       pat=f'{str(datetime.date.today())} 12:59:30',
+       until=f'{str(datetime.date.today())} 13:05:00'):
     trial_cnt = 0
     start_batch = datetime.datetime.strptime(since, '%Y-%m-%d %H:%M:%S')
     pat_batch = datetime.datetime.strptime(pat, '%Y-%m-%d %H:%M:%S')
@@ -75,10 +72,10 @@ def qk(courses,
 
             if datetime.datetime.now() < start_batch:
                 print(datetime.datetime.now())
-                time.sleep(10)
+                time.sleep(60)
             elif datetime.datetime.now() < pat_batch:
                 print(datetime.datetime.now())
-                time.sleep(0.2)
+                time.sleep(1)
             elif datetime.datetime.now() > end_batch:
                 break
 
