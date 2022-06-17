@@ -3,6 +3,8 @@
 [![GitHub license](https://img.shields.io/github/license/HeZean/SUSTech-tisQiangke)](https://github.com/HeZean/SUSTech-tisQiangke)  ![GitHub branch checks state](https://img.shields.io/github/checks-status/hezean/SUSTech-tisQiangke/master)  ![GitHub all releases](https://img.shields.io/github/downloads/hezean/SUSTech-tisQiangke/total)
 
 > Last test: 2022-02-24  [✅ available]
+> 
+> 2022.6.17 feat: 自动填充请求头、课程名匹配  ⚠️ 未验证
 
 ### Before we start
 
@@ -16,7 +18,9 @@ pip install requests  # 请确保电脑装有 Python 3 环境，并安装 pip �
 
 1. 将 `user.json` 里的 `sid` 和 `pwd` 改为自己的学号和 CAS 密码
 
-2. 进入选课界面，找到你要抢的课，点`选课`键
+2. 将课程名完整复制到 json 中，运行程序检查课程信息是否自动匹配正确
+
+3. 对于未能自动匹配的课程，进入选课界面，找到你要抢的课，点`选课`键
 
 
     #### 选课按钮是被禁用的？
@@ -33,14 +37,9 @@ pip install requests  # 请确保电脑装有 Python 3 环境，并安装 pip �
 3. 将开发者工具上方的标签页切换至 `Network(Fetch/XHR)`，多按几下按钮，最后几条请求应该都是 `addGouwuche`  
    <img src="https://i.imgur.com/2wnUmGY.png" height=140 />
 
-4. 点击请求名字，展开请求信息，`Headers `栏下划到底出现 `Form Data`  
+4. 点击请求名字，展开请求信息，`Headers `栏下划到底出现 `Form Data`，把 `p_id` 填到 json 中 `courses1`  
    <img src="https://i.imgur.com/q3ZO1jJ.png" height=360 />
-    1. 大部分header项目不用管，其中，json文件里 `ele_head` 里的项目每学期的是统一，填一次即可
-   
-    2. json中的 `courses` 里保存的是每门课独有的信息，`p_xkfsdm `和 `p_id` 是 headers 里的
-   
-    3. 选多门课只需要把**花括号**及里面的内容复制多份到下方并修改内容即可（注意逗号）
-   
+
 5. 运行脚本，have fun！
 ```
 python3 /path/to/this/file/tis.py

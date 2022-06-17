@@ -1,24 +1,15 @@
 {
   "sid": 12010000,
-  "pwd": "cas_passwd",
-
-  "ele_head": {
-    "p_xn": "2022-2023",
-    "p_xq": "1",
-    "p_xnxq": "2022-20231",
-    "p_dqxn": "2022-2023",
-    "p_dqxq": "1",
-    "p_dqxnxq": "2022-20231"
-  },
+  "pwd": "cas password",
 
   "courses": [
-    {
-      "p_xkfsdm": "xxxk",
-      "p_id": "C451A1AA8EEF9FF2E053CA041H6DB43E"
-    },
-    {
-      "p_xkfsdm": "kzyxk",
-      "p_id": "C074AF0DAD49499AE053CA0412ADF2D5"
-    }
+    "教学班全名，自动匹配课程，如果信息不准确就要在 course1 中手动配",
+    "裸眼3D显示-01班-双语",
+    "粤语入门-01班-中文"
+  ],
+
+  "courses1": [
+    "DC80BC1F270E9933E053CB0412AC2688",
+    "DB58B012E998A99EE053CA0412AC8676"
   ]
 }
